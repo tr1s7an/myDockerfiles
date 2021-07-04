@@ -1,7 +1,7 @@
 #!/bin/sh
 
 mkdir /tmp/v2ray
-wget -q https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip -O /tmp/v2ray/v2ray.zip
+curl -sL https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip -o /tmp/v2ray/v2ray.zip
 unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray
 install -m 755 /tmp/v2ray/v2ray /usr/local/bin/v2ray
 install -m 755 /tmp/v2ray/v2ctl /usr/local/bin/v2ctl
@@ -24,7 +24,8 @@ cat << EOF > /usr/local/etc/v2ray/config.json
     },
     "inbounds": [
         {
-            "port": $PORT,
+            "listen": "127.0.0.1",
+            "port": 8081,
             "protocol": "vless",
             "settings": {
                 "clients": [
