@@ -8,3 +8,11 @@ for V2Ray:
 for mtg:
 
 - mtgsecret
+
+for sshd:
+
+- password
+
+for haproxy:
+  
+  mtgsni
