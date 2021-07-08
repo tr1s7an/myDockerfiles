@@ -1,18 +1,27 @@
-ENV:
+## Description:
 
-for V2Ray:
+    haproxy(:8080)
+      |-- v2ray      (127.0.0.1:8081, by default)
+      |-- mtg        (127.0.0.1:8082, routed by fake tls SNI)
+      |-- sshd       (127.0.0.1:22, routed by req.payload(0,7)==5353482d322e30)
+      |-- others     (*:443, routed by SNI)
 
-- UUID
-- WSPATH
 
-for mtg:
+## Required env variables:
 
-- mtgsecret
+- for v2ray:
 
-for sshd:
+  - UUID
+  - WSPATH
 
-- password
+- for mtg:
 
-for haproxy:
+    - mtgsecret
+
+- for sshd:
+
+    - password
+
+- for haproxy:
   
-  mtgsni
+    - mtgsni

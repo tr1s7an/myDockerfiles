@@ -1,13 +1,12 @@
 #!/bin/sh
 
-/root/setup-V2Ray.sh &
+/root/setup-v2ray.sh &
 status=$?
 if [ $status -ne 0 ]; then
-  echo "Failed to start setup-V2Ray.sh: $status"
+  echo "Failed to start setup-v2ray.sh: $status"
   exit $status
 fi
 
-# Start the second process
 /root/setup-mtg.sh &
 status=$?
 if [ $status -ne 0 ]; then
@@ -35,7 +34,7 @@ fi
 # if it detects that either of the processes has exited.
 # Otherwise it loops forever, waking up every 60 seconds
 while sleep 60; do
-  ps aux |grep setup-V2Ray |grep -q -v grep
+  ps aux |grep setup-v2ray |grep -q -v grep
   PROCESS_1_STATUS=$?
   ps aux |grep setup-mtg |grep -q -v grep
   PROCESS_2_STATUS=$?

@@ -26,15 +26,13 @@ cat << EOF > /usr/local/etc/v2ray/config.json
         {
             "listen": "127.0.0.1",
             "port": 8081,
-            "protocol": "vless",
+            "protocol": "vmess",
             "settings": {
                 "clients": [
                     {
-                        "id": "$UUID",
-                        "level": 0
+                        "id": "$UUID"
                     }
-                ],
-                "decryption": "none"
+                ]
             },
             "streamSettings": {
                 "network": "ws",
