@@ -1,4 +1,4 @@
-## Description:
+## Description
 
     haproxy(:8080)
       |-- v2ray      (127.0.0.1:8081, by default)
@@ -7,7 +7,7 @@
       |-- others     (*:443, routed by SNI)
 
 
-## Required env variables:
+## Required env variables
 
 - for v2ray:
 
