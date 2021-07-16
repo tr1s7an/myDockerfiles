@@ -20,14 +20,14 @@ frontend main
     tcp-request content accept if { req.ssl_hello_type 1 }
     
     acl alidns req.ssl_sni -i dns.alidns.com
-    acl googledns req.ssl_sni -i dns.google
-    acl opendns req.ssl_sni -i doh.opendns.com
+    acl smtp req.ssl_sni -i smtp.gmail.com
+    acl imap req.ssl_sni -i imap.gmail.com
     acl mtgsni req.ssl_sni -i ${mtgsni}
     acl ssh req.payload(0,7) -m bin 5353482d322e30
 
     use_backend ali if alidns
-    use_backend google if googledns
-    use_backend cisco if opendns
+    use_backend gmailsmtp if smtp
+    use_backend gmailimap if imap
     use_backend mtg if mtgsni 
     use_backend sshd if ssh
 
@@ -48,15 +48,15 @@ backend ali
     option tcp-check
     server node3 223.5.5.5:443
 
-backend google 
+backend gmailsmtp 
     mode tcp
     option tcp-check
-    server node4 8.8.8.8:443
+    server node4 74.125.142.108:465
 
-backend cisco
+backend gmailimap
     mode tcp
     option tcp-check
-    server node5 146.112.41.2:443
+    server node5 74.125.142.109:993
 
 backend sshd
     mode tcp
