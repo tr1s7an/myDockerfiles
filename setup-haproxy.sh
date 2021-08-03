@@ -26,6 +26,7 @@ frontend main
     use_backend ali if alidns
     use_backend mtg if mtgsni 
     use_backend sshd if ssh
+    use_backend ss if !HTTP
 
     default_backend v2ray
 
@@ -48,6 +49,11 @@ backend sshd
     mode tcp
     option tcp-check
     server node4 127.0.0.1:22
+
+backend ss
+    mode tcp
+    option tcp-check
+    server node5 127.0.0.1:8083
 
 EOF
 
