@@ -3,7 +3,7 @@ name: Build and push new image
 on:
   push:
     paths:
-      - 'v2ray-core-version'
+      - 'shadowsocks-rust-version'
 
 jobs:
   docker:
