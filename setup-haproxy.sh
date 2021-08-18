@@ -19,13 +19,11 @@ frontend main
     tcp-request inspect-delay 5s
     tcp-request content accept if { req.ssl_hello_type 1 }
     
-    acl alidns req.ssl_sni -i dns.alidns.com
     acl mtgsni req.ssl_sni -i ${mtgsni}
-    acl ssh req.payload(0,7) -m bin 5353482d322e30
-
-    use_backend ali if alidns
+    acl alidns req.ssl_sni -i dns.alidns.com
+    
     use_backend mtg if mtgsni 
-    use_backend sshd if ssh
+    use_backend ali if alidns
     use_backend ss if !HTTP
 
     default_backend v2ray
@@ -45,15 +43,10 @@ backend ali
     option tcp-check
     server node3 223.5.5.5:443
 
-backend sshd
-    mode tcp
-    option tcp-check
-    server node4 127.0.0.1:22
-
 backend ss
     mode tcp
     option tcp-check
-    server node5 127.0.0.1:8083
+    server node4 127.0.0.1:8083
 
 EOF
 

@@ -4,7 +4,6 @@
       |-- v2ray               (127.0.0.1:8081, by default)
       |-- mtg                 (127.0.0.1:8082, routed by fake tls SNI)
       |-- shadowsocks-rust    (127.0.0.1:8083, routed by !HTTP)
-      |-- sshd                (127.0.0.1:22, routed by req.payload(0,7)==5353482d322e30)
       |-- others              (*:443, routed by SNI)
 
 
@@ -12,14 +11,14 @@
 
 - for v2ray:
 
-  - UUID (Also the password for shadowsocks-rust)
+  - UUID
   - WSPATH
 
 - for mtg:
 
     - mtgsecret
 
-- for sshd:
+- for shadowsocks-rust-server:
 
     - password
 
