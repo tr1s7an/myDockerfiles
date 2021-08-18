@@ -1,5 +1,6 @@
 #!/bin/sh
 
+mtgsni=$(cat ~/mtgsni)
 install -d /usr/local/etc/haproxy
 cat << EOF > /usr/local/etc/haproxy/haproxy.cfg
 global
@@ -49,5 +50,3 @@ backend ss
     server node4 127.0.0.1:8083
 
 EOF
-
-/usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg

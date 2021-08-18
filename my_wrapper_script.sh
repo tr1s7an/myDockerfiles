@@ -1,26 +1,40 @@
 #!/bin/sh
 
-/root/setup-v2ray.sh &
+[ -z "${UUID}" ] && UUID=$(/usr/local/bin/v2ctl uuid)
+echo "UUID -> ${UUID}" && echo ${UUID} > ~/UUID
+[ -z "${WSPATH}" ] && WSPATH=$(tr -dc a-z </dev/urandom | head -c 6) && WSPATH="/${WSPATH}"
+echo "WSPATH -> ${WSPATH}" && echo ${WSPATH} > ~/WSPATH
+[ -z "${mtgsni}" ] && mtgsni='www.bilibili.com'
+echo "mtgsni -> ${mtgsni}" && echo ${mtgsni} > ~/mtgsni
+[ -z "${mtgsecret}" ] && mtgsecret=$(/usr/local/bin/mtg generate-secret --hex ${mtgsni})
+echo "mtgsecret -> ${mtgsecret}" && echo ${mtgsecret} > ~/mtgsecret
+[ -z "${password}" ] && password=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)
+echo "password -> ${password}" && echo ${password} > ~/password
+
+/root/setup-v2ray.sh
+/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start setup-v2ray.sh: $status"
   exit $status
 fi
 
-/root/setup-mtg.sh &
+/root/setup-mtg.sh
+/usr/local/bin/mtg run /usr/local/etc/mtg/config.toml &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start setup-mtg.sh: $status"
   exit $status
 fi
 
-/root/setup-haproxy.sh &
+/root/setup-haproxy.sh
+/usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start setup-haproxy.sh: $status"
   exit $status
 fi
-
+ 
 /usr/local/bin/ssserver -s "127.0.0.1:8083" -m "aes-128-gcm" -k "${password}" &
 status=$?
 if [ $status -ne 0 ]; then
@@ -34,11 +48,11 @@ fi
 # if it detects that either of the processes has exited.
 # Otherwise it loops forever, waking up every 60 seconds
 while sleep 60; do
-  ps aux |grep setup-v2ray |grep -q -v grep
+  ps aux |grep v2ray |grep -q -v grep
   PROCESS_1_STATUS=$?
-  ps aux |grep setup-mtg |grep -q -v grep
+  ps aux |grep mtg |grep -q -v grep
   PROCESS_2_STATUS=$?
-  ps aux |grep setup-haproxy |grep -q -v grep
+  ps aux |grep haproxy |grep -q -v grep
   PROCESS_3_STATUS=$?
   ps aux |grep ssserver |grep -q -v grep
   PROCESS_4_STATUS=$?
