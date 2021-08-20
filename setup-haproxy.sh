@@ -21,12 +21,15 @@ frontend main
     tcp-request content accept if { req.ssl_hello_type 1 }
     
     acl mtgsni req.ssl_sni -i ${mtgsni}
-    acl alidns req.ssl_sni -i dns.alidns.com
+    acl dnssni req.ssl_sni -i dns.alidns.com
+    acl smtpsni req.ssl_sni -i smtp.gmail.com
+    acl imapsni req.ssl_sni -i imap.gmail.com
     
     use_backend mtg if mtgsni 
-    use_backend ali if alidns
+    use_backend ali if dnssni
+    use_backend smtp if smtpsni
+    use_backend imap if imapsni
     use_backend ss if !HTTP
-
     default_backend v2ray
 
 backend v2ray
@@ -44,9 +47,19 @@ backend ali
     option tcp-check
     server node3 223.5.5.5:443
 
+backend smtp
+    mode tcp
+    option tcp-check
+    server node4 142.250.141.108:465
+
+backend imap
+    mode tcp
+    option tcp-check
+    server node5 142.250.141.108:993
+
 backend ss
     mode tcp
     option tcp-check
-    server node4 127.0.0.1:8083
+    server node6 127.0.0.1:8083
 
 EOF

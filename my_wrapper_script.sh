@@ -15,7 +15,7 @@ echo "password -> ${password}" && echo ${password} > ~/password
 /usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json &
 status=$?
 if [ $status -ne 0 ]; then
-  echo "Failed to start setup-v2ray.sh: $status"
+  echo "Failed to start v2ray: $status"
   exit $status
 fi
 
@@ -23,7 +23,7 @@ fi
 /usr/local/bin/mtg run /usr/local/etc/mtg/config.toml &
 status=$?
 if [ $status -ne 0 ]; then
-  echo "Failed to start setup-mtg.sh: $status"
+  echo "Failed to start mtg: $status"
   exit $status
 fi
 
@@ -31,7 +31,7 @@ fi
 /usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg &
 status=$?
 if [ $status -ne 0 ]; then
-  echo "Failed to start setup-haproxy.sh: $status"
+  echo "Failed to start haproxy: $status"
   exit $status
 fi
  
