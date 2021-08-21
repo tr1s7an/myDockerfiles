@@ -1,65 +1,45 @@
-#!/bin/sh
+#!/bin/bash
 
-[ -z "${UUID}" ] && UUID=$(/usr/local/bin/v2ctl uuid)
-echo "UUID -> ${UUID}" && echo ${UUID} > ~/UUID
-[ -z "${WSPATH}" ] && WSPATH=$(tr -dc a-z </dev/urandom | head -c 6) && WSPATH="/${WSPATH}"
-echo "WSPATH -> ${WSPATH}" && echo ${WSPATH} > ~/WSPATH
-[ -z "${mtgsni}" ] && mtgsni='www.bilibili.com'
-echo "mtgsni -> ${mtgsni}" && echo ${mtgsni} > ~/mtgsni
-[ -z "${mtgsecret}" ] && mtgsecret=$(/usr/local/bin/mtg generate-secret --hex ${mtgsni})
-echo "mtgsecret -> ${mtgsecret}" && echo ${mtgsecret} > ~/mtgsecret
-[ -z "${password}" ] && password=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)
-echo "password -> ${password}" && echo ${password} > ~/password
+function check_configuration() {
+        if ! [ -v "$1" ] ; then
+                target=$(eval "$2")
+		eval "export $1=${target}"
+		echo -e "-e $1=\"${target}\" \\"
+        fi
+}
+function start_process() {
+	eval "$1" & 
+	status=$?
+	if [ ${status} -ne 0 ]; then
+		echo "Failed to start $2: ${status}"
+	fi
+}
+function check_process() {
+	while sleep 60; do
+		for p in ${@}
+		do
+			ps aux |grep ${p} |grep -q -v grep
+			PROCESS_STATUS=$?
+			if [ ${PROCESS_STATUS} -ne 0 ]; then
+				echo "${p} has already exited."
+			fi
+		done
+	done
+}
 
-/root/setup-v2ray.sh
-/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json &
-status=$?
-if [ $status -ne 0 ]; then
-  echo "Failed to start v2ray: $status"
-  exit $status
-fi
+check_configuration "UUID" "/usr/local/bin/v2ctl uuid"
+check_configuration "WSPATH" "tr -dc a-z </dev/urandom | head -c 6" 
+check_configuration "mtgsni" "echo www.bilibili.com"
+check_configuration "mtgsecret" "/usr/local/bin/mtg generate-secret --hex ${mtgsni}"
+check_configuration "password" "tr -dc A-Za-z0-9 </dev/urandom | head -c 16"
 
-/root/setup-mtg.sh
-/usr/local/bin/mtg run /usr/local/etc/mtg/config.toml &
-status=$?
-if [ $status -ne 0 ]; then
-  echo "Failed to start mtg: $status"
-  exit $status
-fi
-
-/root/setup-haproxy.sh
-/usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg &
-status=$?
-if [ $status -ne 0 ]; then
-  echo "Failed to start haproxy: $status"
-  exit $status
-fi
- 
-/usr/local/bin/ssserver -s "127.0.0.1:8083" -m "aes-128-gcm" -k "${password}" &
-status=$?
-if [ $status -ne 0 ]; then
-  echo "Failed to start ssserver: $status"
-  exit $status
-fi
-
-# Naive check runs checks once a minute to see if either of the processes exited.
-# This illustrates part of the heavy lifting you need to do if you want to run
-# more than one service in a container. The container exits with an error
-# if it detects that either of the processes has exited.
-# Otherwise it loops forever, waking up every 60 seconds
-while sleep 60; do
-  ps aux |grep v2ray |grep -q -v grep
-  PROCESS_1_STATUS=$?
-  ps aux |grep mtg |grep -q -v grep
-  PROCESS_2_STATUS=$?
-  ps aux |grep haproxy |grep -q -v grep
-  PROCESS_3_STATUS=$?
-  ps aux |grep ssserver |grep -q -v grep
-  PROCESS_4_STATUS=$?
-  # If the greps above find anything, they exit with 0 status
-  # If they are not both 0, then something is wrong
-  if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 -o $PROCESS_3_STATUS -ne 0 -o $PROCESS_4_STATUS -ne 0 ]; then
-    echo "One of the processes has already exited."
-    #exit 1
-  fi
+for f in /root/setup-configuration/*.sh; do
+  bash "${f}"
 done
+
+start_process "/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json" "v2ray"
+start_process "/usr/local/bin/mtg run /usr/local/etc/mtg/config.toml" "mtg"
+start_process "/usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg" "haproxy"
+start_process "/usr/local/bin/ssserver -s 127.0.0.1:8083 -m aes-128-gcm -k ${password}" "ssserver"
+
+check_process "v2ray" "mtg" "haproxy" "ssserver"

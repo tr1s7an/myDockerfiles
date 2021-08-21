@@ -1,6 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-mtgsecret=$(cat ~/mtgsecret)
 install -d /usr/local/etc/mtg
 cat << EOF > /usr/local/etc/mtg/config.toml
 secret = "$mtgsecret"

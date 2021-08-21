@@ -1,6 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-mtgsni=$(cat ~/mtgsni)
 install -d /usr/local/etc/haproxy
 cat << EOF > /usr/local/etc/haproxy/haproxy.cfg
 global

@@ -1,7 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-UUID=$(cat ~/UUID)
-WSPATH=$(cat ~/WSPATH)
 install -d /usr/local/etc/v2ray
 cat << EOF > /usr/local/etc/v2ray/config.json
 {
@@ -36,7 +34,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "ws",
                 "security": "none",
                 "wsSettings": {
-                    "path": "$WSPATH"
+                    "path": "/$WSPATH"
                 }
             }
         }
