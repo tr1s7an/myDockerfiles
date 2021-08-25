@@ -7,13 +7,6 @@ function check_configuration() {
 		echo -e "-e $1=\"${target}\" \\"
         fi
 }
-function start_process() {
-	eval "$1" & 
-	status=$?
-	if [ ${status} -ne 0 ]; then
-		echo "Failed to start $2: ${status}"
-	fi
-}
 function check_process() {
 	while sleep 60; do
 		for p in ${@}
@@ -37,9 +30,9 @@ for f in /root/setup-configuration/*.sh; do
   bash "${f}"
 done
 
-start_process "/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json" "v2ray"
-start_process "/usr/local/bin/mtg run /usr/local/etc/mtg/config.toml" "mtg"
-start_process "/usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg" "haproxy"
-start_process "/usr/local/bin/ssserver -s 127.0.0.1:8083 -m aes-128-gcm -k ${password}" "ssserver"
+/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json &
+/usr/local/bin/mtg run /usr/local/etc/mtg/config.toml &
+/usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg &
+/usr/local/bin/ssserver -s 127.0.0.1:8083 -m aes-128-gcm -k "${password}" &
 
 check_process "v2ray" "mtg" "haproxy" "ssserver"

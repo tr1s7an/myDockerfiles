@@ -7,7 +7,7 @@
       |-- others              (*:443, routed by SNI)
 
 
-## Required env variables (Auto generation enabled)
+## Required Env Variables (auto generation enabled)
 
 - for v2ray:
 
