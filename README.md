@@ -5,6 +5,7 @@
       |-- mtg                 (127.0.0.1:8082, routed by fake tls SNI)
       |-- shadowsocks-rust    (127.0.0.1:8083, routed by !HTTP)
       |-- others              (*:443, routed by SNI)
+    shadowsocks-rust(:18080 with udp)
 
 
 ## Required Env Variables (auto generation enabled)

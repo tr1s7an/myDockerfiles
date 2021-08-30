@@ -3,7 +3,7 @@
 install -d /usr/local/etc/haproxy
 cat << EOF > /usr/local/etc/haproxy/haproxy.cfg
 global
-    maxconn     512
+    maxconn     128 
     log         127.0.0.1 local0
 
 defaults

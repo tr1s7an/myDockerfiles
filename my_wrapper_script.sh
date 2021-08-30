@@ -33,6 +33,6 @@ done
 /usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json &
 /usr/local/bin/mtg run /usr/local/etc/mtg/config.toml &
 /usr/sbin/haproxy -f /usr/local/etc/haproxy/haproxy.cfg &
-/usr/local/bin/ssserver -s 127.0.0.1:8083 -m aes-128-gcm -k "${password}" &
+/usr/local/bin/ssserver --config /usr/local/etc/shadowsocks-rust/config.json & 
 
 check_process "v2ray" "mtg" "haproxy" "ssserver"
