@@ -20,11 +20,13 @@ function check_process() {
 	done
 }
 
+echo 'Generating environment variables...'
 check_configuration "UUID" "/usr/local/bin/v2ctl uuid"
 check_configuration "WSPATH" "tr -dc a-z </dev/urandom | head -c 6" 
 check_configuration "mtgsni" "echo www.bilibili.com"
 check_configuration "mtgsecret" "/usr/local/bin/mtg generate-secret --hex ${mtgsni}"
 check_configuration "password" "tr -dc A-Za-z0-9 </dev/urandom | head -c 16"
+echo 'Done'
 
 for f in /root/setup-configuration/*.sh; do
   bash "${f}"
