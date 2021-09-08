@@ -1,4 +1,4 @@
-name: Get shadowsocks-rust latest release version
+name: Get latest release version
 on:
   schedule:
     - cron:  '0 10 * * *'
@@ -11,12 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Fetch shadowsocks-rust release version
+      - name: Fetch release version
         run: |
-          curl -s https://github.com/shadowsocks/shadowsocks-rust/releases/latest | \
-          grep -o 'tag\/v[0-9].*[0-9]' | \
-          grep -o '[0-9].*[0-9]' | \
-          cat > shadowsocks-rust-version
+          ss_version=$(curl -s https://github.com/shadowsocks/shadowsocks-rust/releases/latest |grep -o 'tag\/v[0-9].*[0-9]' |grep -o '[0-9].*[0-9]')
+          v2ray_version=$(curl -s https://github.com/v2fly/v2ray-core/releases/latest |grep -o 'tag\/v[0-9].*[0-9]' |grep -o '[0-9].*[0-9]')
+          mtg_version=$(curl -s https://github.com/9seconds/mtg/releases/latest |grep -o 'tag\/v[0-9].*[0-9]' |grep -o '[0-9].*[0-9]')
+          echo -e "shadowsocks-rust ${ss_version}\nv2ray-core ${v2ray_version}\nmtg ${mtg_version}" |tee VERSION
       - name: Check for modified files
         id: git-check
         run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")

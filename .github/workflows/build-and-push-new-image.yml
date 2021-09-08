@@ -3,7 +3,7 @@ name: Build and push new image
 on:
   push:
     paths:
-      - 'shadowsocks-rust-version'
+      - 'VERSION'
 
 jobs:
   docker:

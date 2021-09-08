@@ -7,18 +7,9 @@ cat << EOF > /usr/local/etc/v2ray/config.json
         "access": "none",
         "loglevel": "error"
     },
-    "dns": {
-        "servers": [
-            {
-                "address": "https+local://cloudflare-dns.com/dns-query",
-                "port": 443
-            }
-        ]
-    },
     "inbounds": [
         {
-            "listen": "127.0.0.1",
-            "port": 8081,
+            "listen": "/var/run/v2ray.sock",
             "protocol": "vmess",
             "settings": {
                 "clients": [
@@ -34,7 +25,8 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "ws",
                 "security": "none",
                 "wsSettings": {
-                    "path": "/$WSPATH"
+                    "path": "/$WSPATH",
+                    "maxEarlyData": 2048 
                 }
             }
         }

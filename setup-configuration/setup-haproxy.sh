@@ -34,7 +34,7 @@ frontend main
 backend v2ray
     mode tcp
     option tcp-check
-    server node1 127.0.0.1:8081
+    server node1 /var/run/v2ray.sock 
 
 backend mtg
     mode tcp
