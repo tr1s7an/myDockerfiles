@@ -9,7 +9,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
     },
     "inbounds": [
         {
-            "listen": "/var/run/v2ray.sock",
+            "listen": "${UNIX_DOMAIN_SOCKET_FILE}",
             "protocol": "vmess",
             "settings": {
                 "clients": [

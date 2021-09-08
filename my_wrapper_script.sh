@@ -28,6 +28,11 @@ check_configuration "mtgsecret" "/usr/local/bin/mtg generate-secret --hex ${mtgs
 check_configuration "password" "tr -dc A-Za-z0-9 </dev/urandom | head -c 16"
 echo 'Done'
 
+export UNIX_DOMAIN_SOCKET_FILE="/var/run/v2ray.sock"
+if [ -S "${UNIX_DOMAIN_SOCKET_FILE}" ]; then
+	rm -f "${UNIX_DOMAIN_SOCKET_FILE}"*
+fi
+
 for f in /root/setup-configuration/*.sh; do
   bash "${f}"
 done

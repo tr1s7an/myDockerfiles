@@ -34,7 +34,7 @@ frontend main
 backend v2ray
     mode tcp
     option tcp-check
-    server node1 /var/run/v2ray.sock 
+    server node1 ${UNIX_DOMAIN_SOCKET_FILE} 
 
 backend mtg
     mode tcp
