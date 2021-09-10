@@ -8,7 +8,10 @@
       |-- shadowsocks-rust-server    (0.0.0.0:8083, routed by !HTTP)
       |-- others                     (*:443, routed by SNI)
 
-    # Map port 8083 alone for udp support since HAProxy doesn't support udp balancing.
+    WIREGUARD(:44444)
+
+    # Map port 8083 alone for UDP support since HAProxy doesn't support UDP load balancing
+    # WIREGUARD is optional and it will start with **-e ENABLE_WG=yes --cap-add net_admin**
 
 ## Environment Variables (auto generation enabled)
 
@@ -28,3 +31,8 @@
 - for HAProxy:
   
   - mtgsni
+
+- for WIREGUARD:
+
+  - serverprikey
+  - clientprikey

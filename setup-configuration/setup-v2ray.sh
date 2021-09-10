@@ -14,7 +14,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
             "settings": {
                 "clients": [
                     {
-                        "id": "$UUID",
+                        "id": "${UUID}",
                         "alterId": 0,
                         "security": "auto"
 
@@ -25,7 +25,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "ws",
                 "security": "none",
                 "wsSettings": {
-                    "path": "/$WSPATH",
+                    "path": "/${WSPATH}",
                     "maxEarlyData": 2048 
                 }
             }
@@ -35,7 +35,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
         {
             "protocol": "freedom",
             "settings": {
-                "domainStrategy": "UseIP"
+                "domainStrategy": "AsIs"
             }
         }
     ]
