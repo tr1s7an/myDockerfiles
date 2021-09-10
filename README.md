@@ -12,6 +12,7 @@
 
     # Map port 8083 alone for UDP support since HAProxy doesn't support UDP load balancing
     # WIREGUARD is optional and it will start with **-e ENABLE_WG=yes --cap-add net_admin**
+    # Also add **--sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.all.forwarding=1** for WIREGUARD IPv6 support
 
 ## Environment Variables (auto generation enabled)
 
