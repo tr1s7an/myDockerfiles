@@ -9,7 +9,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
     },
     "inbounds": [
         {
-            "listen": "${UNIX_DOMAIN_SOCKET_FILE}",
+            "listen": "${VMESS_DOMAIN_SOCKET_FILE}",
             "protocol": "vmess",
             "settings": {
                 "clients": [
@@ -17,7 +17,6 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                         "id": "${UUID}",
                         "alterId": 0,
                         "security": "auto"
-
                     }
                 ]
             },
@@ -25,8 +24,26 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "ws",
                 "security": "none",
                 "wsSettings": {
-                    "path": "/${WSPATH}",
-                    "maxEarlyData": 2048 
+                    "path": "/${MYPATH}",
+                    "maxEarlyData": 2048
+                }
+            }
+        },
+        {
+            "listen": "${TROJAN_DOMAIN_SOCKET_FILE}",
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "${UUID}"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "security": "none",
+                "grpcSettings": {
+                    "serviceName": "${MYPATH}"
                 }
             }
         }

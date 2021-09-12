@@ -20,19 +20,27 @@ function check_process() {
 	done
 }
 
+function clean_socket_file() {
+	for f in ${@} 
+	do
+		if [ -S ${f} ]; then
+			rm -f "${f}"*
+		fi
+	done
+}
+
 echo '===============Generating environment variables...==============='
 check_configuration "UUID" "/usr/local/bin/v2ctl uuid"
-check_configuration "WSPATH" "tr -dc a-z </dev/urandom | head -c 6" 
+check_configuration "MYPATH" "tr -dc a-z </dev/urandom | head -c 6" 
 check_configuration "mtgsni" "echo www.bilibili.com"
 check_configuration "mtgsecret" "/usr/local/bin/mtg generate-secret --hex ${mtgsni}"
 check_configuration "password" "tr -dc A-Za-z0-9 </dev/urandom | head -c 16"
 echo '============================Done================================='
 
 # Clean v2ray socket file
-export UNIX_DOMAIN_SOCKET_FILE="/var/run/v2ray.sock"
-if [ -S "${UNIX_DOMAIN_SOCKET_FILE}" ]; then
-	rm -f "${UNIX_DOMAIN_SOCKET_FILE}"*
-fi
+export VMESS_DOMAIN_SOCKET_FILE="/var/run/vmess.sock"
+export TROJAN_DOMAIN_SOCKET_FILE="/var/run/trojan.sock"
+clean_socket_file "${VMESS_DOMAIN_SOCKET_FILE}" "${TROJAN_DOMAIN_SOCKET_FILE}"
 
 # Run all setup shell scripts
 for f in /root/setup-configuration/setup-*.sh; do

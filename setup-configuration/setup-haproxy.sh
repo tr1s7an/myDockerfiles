@@ -28,37 +28,35 @@ frontend main
     use_backend ali if dnssni
     use_backend smtp if smtpsni
     use_backend imap if imapsni
-    use_backend ss if !HTTP
-    default_backend v2ray
+    use_backend vmess if HTTP_1.1
+    use_backend trojan if HTTP_2.0
+    default_backend ss 
 
-backend v2ray
-    mode tcp
-    option tcp-check
-    server node1 ${UNIX_DOMAIN_SOCKET_FILE} 
+backend vmess
+    mode http 
+    server vmess ${VMESS_DOMAIN_SOCKET_FILE} 
+
+backend trojan 
+    mode http 
+    server trojan ${TROJAN_DOMAIN_SOCKET_FILE} proto h2
 
 backend mtg
     mode tcp
-    option tcp-check
-    server node2 127.0.0.1:8082
+    server mtg 127.0.0.1:8082
 
 backend ali
     mode tcp
-    option tcp-check
-    server node3 223.5.5.5:443
+    server ali 223.5.5.5:443
 
 backend smtp
     mode tcp
-    option tcp-check
-    server node4 142.250.141.108:465
+    server smtp 142.250.141.108:465
 
 backend imap
     mode tcp
-    option tcp-check
-    server node5 142.250.141.108:993
+    server imap 142.250.141.108:993
 
 backend ss
     mode tcp
-    option tcp-check
-    server node6 127.0.0.1:8083
-
+    server ss 127.0.0.1:8083
 EOF
