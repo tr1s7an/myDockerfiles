@@ -19,7 +19,6 @@ function check_process() {
 		done
 	done
 }
-
 function clean_socket_file() {
 	for f in ${@} 
 	do
