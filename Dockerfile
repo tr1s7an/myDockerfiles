@@ -1,16 +1,20 @@
+FROM golang:alpine
+
+RUN apk -U upgrade \
+    && apk add git make \
+    && git clone https://git.zx2c4.com/wireguard-go /tmp/wireguard-go \
+    && cd /tmp/wireguard-go \
+    && make
+
 FROM alpine:latest
 
+COPY --from=0 /tmp/wireguard-go/wireguard-go /usr/local/bin/wireguard-go
 ADD setup-configuration /root/setup-configuration/ 
 COPY my_wrapper_script.sh /root/my_wrapper_script.sh
 
+
 RUN apk -U upgrade \
     && apk add --no-cache bash unzip curl haproxy wireguard-tools iptables ip6tables \
-    && apk add --virtual build-deps --no-cache go git make \
-    && git clone https://git.zx2c4.com/wireguard-go /tmp/wireguard-go \
-    && cd /tmp/wireguard-go \
-    && make \
-    && install -m 755 wireguard-go /usr/local/bin/wireguard-go \
-    && cd \
     && chmod +x /root/setup-configuration/*.sh /root/*.sh \
     && mkdir /tmp/v2ray \
     && curl -sL 'https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip' -o /tmp/v2ray/v2ray.zip \
@@ -27,8 +31,7 @@ RUN apk -U upgrade \
     && curl -sL "https://github.com/shadowsocks/shadowsocks-rust/releases/download/v${ss_version}/shadowsocks-v${ss_version}.x86_64-unknown-linux-musl.tar.xz" -o /tmp/ss/ss.tar.xz \
     && tar -C /tmp/ss -xf /tmp/ss/ss.tar.xz \
     && install -m 755 /tmp/ss/ssserver /usr/local/bin/ssserver \
-    && rm -rf /tmp/wireguard-go /tmp/v2ray /tmp/mtg /tmp/ss /root/go \
-    && apk del build-deps
+    && rm -rf /tmp/v2ray /tmp/mtg /tmp/ss
 
 
 CMD /root/my_wrapper_script.sh
