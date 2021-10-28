@@ -20,12 +20,10 @@ frontend main
     tcp-request content accept if { req.ssl_hello_type 1 }
     
     acl mtgsni req.ssl_sni -i ${mtgsni}
-    acl dnssni req.ssl_sni -i dns.alidns.com
     acl smtpsni req.ssl_sni -i smtp.gmail.com
     acl imapsni req.ssl_sni -i imap.gmail.com
     
     use_backend mtg if mtgsni 
-    use_backend ali if dnssni
     use_backend smtp if smtpsni
     use_backend imap if imapsni
     use_backend vmess if HTTP_1.1
@@ -43,10 +41,6 @@ backend trojan
 backend mtg
     mode tcp
     server mtg 127.0.0.1:8082
-
-backend ali
-    mode tcp
-    server ali 223.5.5.5:443
 
 backend smtp
     mode tcp

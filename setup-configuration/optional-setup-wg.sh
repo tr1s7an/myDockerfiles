@@ -1,6 +1,7 @@
 #/bin/bash
 
-if [ -z "$(ip -6 addr)" ]; then
+ping -c 1 -6 www.google.com
+if [ ${?} -eq 2 ]; then
 cat << EOF > /etc/wireguard/${interface_name}.conf
 [Interface]
   PrivateKey = ${serverprikey} 
