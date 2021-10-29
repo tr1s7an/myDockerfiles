@@ -15,7 +15,7 @@ defaults
 
 frontend main
     mode tcp
-    bind :8080
+    bind :${PORT}
     tcp-request inspect-delay 5s
     tcp-request content accept if { req.ssl_hello_type 1 }
     
