@@ -29,17 +29,22 @@ function clean_socket_file() {
 }
 
 echo '===============Generating environment variables...==============='
+check_configuration "PORT" "echo 8080"
+check_configuration "FALLBACK" "echo dGVzdC5ub2Vyci5ldS5vcmcK | base64 -d"
 check_configuration "UUID" "/usr/local/bin/v2ctl uuid"
-check_configuration "MYPATH" "tr -dc a-z </dev/urandom | head -c 6" 
+check_configuration "MAINPATH" "tr -dc a-z </dev/urandom | head -c 6" 
+check_configuration "VMESSPATH" "tr -dc a-z </dev/urandom | head -c 6" 
+check_configuration "TROJANPATH" "tr -dc a-z </dev/urandom | head -c 6" 
 check_configuration "mtgsni" "echo www.bilibili.com"
 check_configuration "mtgsecret" "/usr/local/bin/mtg generate-secret --hex ${mtgsni}"
 check_configuration "password" "tr -dc A-Za-z0-9 </dev/urandom | head -c 16"
 echo '============================Done================================='
 
 # Clean v2ray socket file
+export MAIN_DOMAIN_SOCKET_FILE="/var/run/main.sock"
 export VMESS_DOMAIN_SOCKET_FILE="/var/run/vmess.sock"
 export TROJAN_DOMAIN_SOCKET_FILE="/var/run/trojan.sock"
-clean_socket_file "${VMESS_DOMAIN_SOCKET_FILE}" "${TROJAN_DOMAIN_SOCKET_FILE}"
+clean_socket_file "${MAIN_DOMAIN_SOCKET_FILE}" "${VMESS_DOMAIN_SOCKET_FILE}" "${TROJAN_DOMAIN_SOCKET_FILE}"
 
 # Run all setup shell scripts
 for f in /root/setup-configuration/setup-*.sh; do

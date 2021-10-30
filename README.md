@@ -3,11 +3,12 @@
 ## Description
 
     HAProxy(:8080)
-      |-- V2Ray VMESS websocket      (unix:/var/run/vmess.sock, routed by HTTP_1.1)
-      |-- V2Ray trojan grpc          (unix:/var/run/trojan.sock, routed by HTTP_2.0)
-      |-- mtg                        (127.0.0.1:8082, routed by fake tls SNI)
-      |-- shadowsocks-rust-server    (0.0.0.0:8083, by default)
-      |-- others                     (*:443, routed by SNI)
+      |-- V2Ray trojan over websocket      (unix:/var/run/main.sock, routed by MAINPATH)
+      |-- V2Ray vmess over websocket       (unix:/var/run/vmess.sock, routed by VMESSPATH)
+      |-- V2Ray trojan over grpc           (unix:/var/run/trojan.sock, routed by TROJANPATH)
+      |-- mtg                              (127.0.0.1:8082, routed by fake tls SNI)
+      |-- shadowsocks-rust-server          (0.0.0.0:8083, by default)
+      |-- others                           (*:443, routed by SNI)
 
     WIREGUARD(:44444)
 
@@ -21,7 +22,9 @@
 - for V2Ray:
 
   - UUID
-  - MYPATH
+  - MAINPATH
+  - VMESSPATH
+  - TROJANPATH
 
 - for mtg:
 
