@@ -13,12 +13,19 @@ defaults
     timeout client 1m
     timeout server 1m
 
+frontend webfrontend
+    mode http
+    bind 127.0.0.1:32765
+    default_backend web 
+
 frontend main
     mode tcp
     bind :${PORT}
     tcp-request inspect-delay 5s
     tcp-request content accept if { req.ssl_hello_type 1 }
-    
+
+    acl mainpath path_beg /${MAINPATH}
+    acl vmesspath path_beg /${VMESSPATH}
     acl mtgsni req.ssl_sni -i ${mtgsni}
     acl smtpsni req.ssl_sni -i smtp.gmail.com
     acl imapsni req.ssl_sni -i imap.gmail.com
@@ -26,9 +33,15 @@ frontend main
     use_backend mtg if mtgsni 
     use_backend smtp if smtpsni
     use_backend imap if imapsni
-    use_backend vmess if HTTP_1.1
+    use_backend ss if !HTTP
+    use_backend main if mainpath
+    use_backend vmess if vmesspath
     use_backend trojan if HTTP_2.0
-    default_backend ss 
+    default_backend web 
+
+backend main 
+    mode http 
+    server main ${MAIN_DOMAIN_SOCKET_FILE}
 
 backend vmess
     mode http 
@@ -53,4 +66,12 @@ backend imap
 backend ss
     mode tcp
     server ss 127.0.0.1:8083
+
+backend web
+    mode http
+    http-request set-header Host ${FALLBACK}:443
+    server web ${FALLBACK}:443 resolvers mydns resolve-prefer ipv4 ssl sni str(${FALLBACK}) alpn http/1.1 force-tlsv13 verify required verifyhost ${FALLBACK} ca-file /etc/ssl/certs/ca-certificates.crt
+
+resolvers mydns
+  nameserver cloudflare 1.1.1.1:53
 EOF
