@@ -1,0 +1,17 @@
+{
+    "name": "q-a-q",
+    "description": "q-a-q",
+    "keywords": [
+    ],
+    "env": {
+        "UUID": {
+            "description": "UUID"
+        },
+        "MYPATH": {
+            "description": "MYPATH"
+        }
+    },
+    "website": "",
+    "repository": "https://github.com/tr1s7an/myDockerfiles/tree/main",
+    "stack": "container"
+}
