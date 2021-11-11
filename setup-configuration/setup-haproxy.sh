@@ -19,53 +19,28 @@ frontend webfrontend
     default_backend web 
 
 frontend main
-    mode tcp
+    mode http
     bind :${PORT}
-    tcp-request inspect-delay 5s
-    tcp-request content accept if { req.ssl_hello_type 1 }
 
-    acl mainpath path_beg /${MAINPATH}
-    acl vmesspath path_beg /${VMESSPATH}
-    acl mtgsni req.ssl_sni -i ${mtgsni}
-    acl smtpsni req.ssl_sni -i smtp.gmail.com
-    acl imapsni req.ssl_sni -i imap.gmail.com
-    
-    use_backend mtg if mtgsni 
-    use_backend smtp if smtpsni
-    use_backend imap if imapsni
-    use_backend ss if !HTTP
-    use_backend main if mainpath
-    use_backend vmess if vmesspath
-    use_backend trojan if HTTP_2.0
+    acl trojanwspath path_beg /${TROJANWSPATH}
+    acl vmesswspath path_beg /${VMESSWSPATH}
+
+    use_backend trojanws if trojanwspath
+    use_backend vmessws if vmesswspath
+    use_backend trojangrpc if HTTP_2.0
     default_backend web 
 
-backend main 
+backend trojanws 
     mode http 
-    server main ${MAIN_DOMAIN_SOCKET_FILE}
+    server trojanws ${TROJANWS_DOMAIN_SOCKET_FILE}
 
-backend vmess
+backend vmessws
     mode http 
-    server vmess ${VMESS_DOMAIN_SOCKET_FILE} 
+    server vmessws ${VMESSWS_DOMAIN_SOCKET_FILE} 
 
-backend trojan 
+backend trojangrpc 
     mode http 
-    server trojan ${TROJAN_DOMAIN_SOCKET_FILE} proto h2
-
-backend mtg
-    mode tcp
-    server mtg 127.0.0.1:8082
-
-backend smtp
-    mode tcp
-    server smtp 142.250.141.108:465
-
-backend imap
-    mode tcp
-    server imap 142.250.141.108:993
-
-backend ss
-    mode tcp
-    server ss 127.0.0.1:8083
+    server trojangrpc ${TROJANGRPC_DOMAIN_SOCKET_FILE} proto h2
 
 backend web
     mode http

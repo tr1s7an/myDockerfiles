@@ -1,17 +1,23 @@
 {
-    "name": "q-a-q",
-    "description": "q-a-q",
+    "name": "7a2ff3d7b146",
+    "description": "https://github.com/tr1s7an/myDockerfiles",
     "keywords": [
     ],
     "env": {
         "UUID": {
             "description": "UUID"
         },
-        "MYPATH": {
-            "description": "MYPATH"
-        }
+        "TROJANWSPATH": {
+            "description": "TROJANWSPATH (No slash)"
+        },
+        "VMESSWSPATH": {
+            "description": "VMESSWSPATH (No slash)"
+        },
+        "TROJANGRPCPATH": {
+            "description": "TROJANGRPCPATH"
+        }        
     },
-    "website": "",
-    "repository": "https://github.com/tr1s7an/myDockerfiles/tree/main",
+    "website": "https://github.com/tr1s7an/myDockerfiles",
+    "repository": "https://github.com/tr1s7an/myDockerfiles",
     "stack": "container"
 }

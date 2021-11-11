@@ -9,7 +9,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
     },
     "inbounds": [
         {
-            "listen": "${MAIN_DOMAIN_SOCKET_FILE}",
+            "listen": "${TROJANWS_DOMAIN_SOCKET_FILE}",
             "protocol": "trojan",
             "settings": {
                 "clients": [
@@ -22,13 +22,13 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "ws",
                 "security": "none",
                 "wsSettings": {
-                    "path": "/${MAINPATH}",
+                    "path": "/${TROJANWSPATH}",
                     "maxEarlyData": 2048
                 }
             }
         },
         {
-            "listen": "${VMESS_DOMAIN_SOCKET_FILE}",
+            "listen": "${VMESSWS_DOMAIN_SOCKET_FILE}",
             "protocol": "vmess",
             "settings": {
                 "clients": [
@@ -43,13 +43,13 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "ws",
                 "security": "none",
                 "wsSettings": {
-                    "path": "/${VMESSPATH}",
+                    "path": "/${VMESSWSPATH}",
                     "maxEarlyData": 2048
                 }
             }
         },
         {
-            "listen": "${TROJAN_DOMAIN_SOCKET_FILE}",
+            "listen": "${TROJANGRPC_DOMAIN_SOCKET_FILE}",
             "protocol": "trojan",
             "settings": {
                 "clients": [
@@ -67,7 +67,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                 "network": "grpc",
                 "security": "none",
                 "grpcSettings": {
-                    "serviceName": "${TROJANPATH}"
+                    "serviceName": "${TROJANGRPCPATH}"
                 }
             }
         }
