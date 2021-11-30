@@ -56,12 +56,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
                     {
                         "password": "${UUID}"
                     }
-                ],
-                "fallbacks": [
-                    {
-                        "dest": "127.0.0.1:32765"
-                    }
-                ]  
+                ]
             },
             "streamSettings": {
                 "network": "grpc",

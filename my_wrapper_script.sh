@@ -2,7 +2,7 @@
 
 echo '===============Generating environment variables...==============='
 echo "-e PORT=${PORT:=8080} \\" && export PORT=${PORT}
-echo "-e FALLBACK=${FALLBACK:=$(echo dGVzdC5ub2Vyci5ldS5vcmcK | base64 -d)} \\" && export FALLBACK=${FALLBACK}
+echo "-e FALLBACK=${FALLBACK:=$(echo ZGVtbzIubmV4dGNsb3VkLmNvbQo= | base64 -d)} \\" && export FALLBACK=${FALLBACK}
 echo "-e UUID=${UUID:=$(/usr/local/bin/v2ctl uuid)} \\" && export UUID=${UUID}
 echo "-e TROJANWSPATH=${TROJANWSPATH:=$(tr -dc a-z </dev/urandom | head -c 10)} \\" && export TROJANWSPATH=${TROJANWSPATH}
 echo "-e VMESSWSPATH=${VMESSWSPATH:=$(tr -dc a-z </dev/urandom | head -c 10)} \\" && export VMESSWSPATH=${VMESSWSPATH}
