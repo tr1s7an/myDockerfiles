@@ -1,7 +1,7 @@
 #!/bin/bash
 
-install -d /usr/local/etc/v2ray
-cat << EOF > /usr/local/etc/v2ray/config.json
+install -d /usr/local/etc/app
+cat << EOF > /usr/local/etc/app/config.json
 {
     "log": {
         "access": "none",
