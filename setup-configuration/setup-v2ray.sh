@@ -1,78 +1,66 @@
 #!/bin/bash
 
-install -d /usr/local/etc/app
-cat << EOF > /usr/local/etc/app/config.json
+install -d /usr/local/etc/myapp
+cat << EOF > /usr/local/etc/myapp/config.json
 {
-    "log": {
-        "access": "none",
-        "loglevel": "error"
-    },
     "inbounds": [
         {
-            "listen": "${TROJANWS_DOMAIN_SOCKET_FILE}",
+            "listen": "@${TROJANWS_DOMAIN_SOCKET_FILE}",
             "protocol": "trojan",
             "settings": {
-                "clients": [
-                    {
-                        "password": "${UUID}"
-                    }
+                "users": [
+                    "${UUID}"
                 ]
             },
             "streamSettings": {
-                "network": "ws",
-                "security": "none",
-                "wsSettings": {
+                "transport": "ws",
+                "transportSettings": {
                     "path": "/${TROJANWSPATH}",
                     "maxEarlyData": 2048
-                }
+                },
+                "security": "none",
+                "securitySettings": {}
             }
         },
         {
-            "listen": "${VMESSWS_DOMAIN_SOCKET_FILE}",
+            "listen": "@${VMESSWS_DOMAIN_SOCKET_FILE}",
             "protocol": "vmess",
             "settings": {
-                "clients": [
-                    {
-                        "id": "${UUID}",
-                        "alterId": 0,
-                        "security": "auto"
-                    }
+                "users": [
+                    "${UUID}"
                 ]
             },
             "streamSettings": {
-                "network": "ws",
-                "security": "none",
-                "wsSettings": {
+                "transport": "ws",
+                "transportSettings": {
                     "path": "/${VMESSWSPATH}",
                     "maxEarlyData": 2048
-                }
+                },
+                "security": "none",
+                "securitySettings": {}
             }
         },
         {
-            "listen": "${TROJANGRPC_DOMAIN_SOCKET_FILE}",
+            "listen": "@${TROJANGRPC_DOMAIN_SOCKET_FILE}",
             "protocol": "trojan",
             "settings": {
-                "clients": [
-                    {
-                        "password": "${UUID}"
-                    }
+                "users": [
+                    "${UUID}"
                 ]
             },
             "streamSettings": {
-                "network": "grpc",
-                "security": "none",
-                "grpcSettings": {
+                "transport": "grpc",
+                "transportSettings": {
                     "serviceName": "${TROJANGRPCPATH}"
-                }
+                },
+                "security": "none",
+                "securitySettings": {}
             }
         }
     ],
     "outbounds": [
         {
-            "protocol": "freedom",
-            "settings": {
-                "domainStrategy": "AsIs"
-            }
+            "protocol": "freedom"
         }
     ]
 }
