@@ -1,6 +1,6 @@
 {
     "name": "7a2ff3d7b146",
-    "description": "https://github.com/tr1s7an/myDockerfiles",
+    "description": "https://github.com/tr1s7an/",
     "keywords": [
     ],
     "env": {
@@ -17,7 +17,7 @@
             "description": "TROJANGRPCPATH"
         }        
     },
-    "website": "https://github.com/tr1s7an/myDockerfiles",
-    "repository": "https://github.com/tr1s7an/myDockerfiles",
+    "website": "https://github.com/tr1s7an/",
+    "repository": "https://github.com/tr1s7an/",
     "stack": "container"
 }
