@@ -28,15 +28,15 @@ frontend main
 
 backend trojanws 
     mode http 
-    server trojanws ${TROJANWS_DOMAIN_SOCKET_FILE}
+    server trojanws 127.0.0.1:${TROJANWSPORT}
 
 backend vmessws
     mode http 
-    server vmessws ${VMESSWS_DOMAIN_SOCKET_FILE} 
+    server vmessws 127.0.0.1:${VMESSWSPORT} 
 
 backend trojangrpc 
     mode http 
-    server trojangrpc ${TROJANGRPC_DOMAIN_SOCKET_FILE} proto h2
+    server trojangrpc 127.0.0.1:${TROJANGRPCPORT} proto h2
 
 backend web
     mode http

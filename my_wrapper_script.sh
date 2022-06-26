@@ -9,10 +9,9 @@ echo "-e VMESSWSPATH=${VMESSWSPATH:=$(tr -dc a-z </dev/urandom | head -c 10)} \\
 echo "-e TROJANGRPCPATH=${TROJANGRPCPATH:=$(tr -dc a-z </dev/urandom | head -c 10)} \\" && export TROJANGRPCPATH=${TROJANGRPCPATH}
 echo '============================Done================================='
 
-export TROJANWS_DOMAIN_SOCKET_FILE='/var/run/trojanws.sock'
-export VMESSWS_DOMAIN_SOCKET_FILE='/var/run/vmessws.sock'
-export TROJANGRPC_DOMAIN_SOCKET_FILE='/var/run/trojangrpc.sock'
-rm -f ${TROJANWS_DOMAIN_SOCKET_FILE} ${VMESSWS_DOMAIN_SOCKET_FILE} ${TROJANGRPC_DOMAIN_SOCKET_FILE}
+export TROJANWSPORT=$(shuf -i 40000-41000 -n 1)
+export VMESSWSPORT=$(shuf -i 41000-42000 -n 1)
+export TROJANGRPCPORT=$(shuf -i 42000-43000 -n 1)
 
 for f in /root/setup-configuration/setup-*.sh; do bash "${f}"; done
 

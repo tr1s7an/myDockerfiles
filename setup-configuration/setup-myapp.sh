@@ -5,7 +5,8 @@ cat << EOF > /usr/local/etc/myapp/config.json
 {
     "inbounds": [
         {
-            "listen": "@${TROJANWS_DOMAIN_SOCKET_FILE}",
+            "listen": "127.0.0.1", 
+            "port": ${TROJANWSPORT},
             "protocol": "trojan",
             "settings": {
                 "users": [
@@ -23,7 +24,8 @@ cat << EOF > /usr/local/etc/myapp/config.json
             }
         },
         {
-            "listen": "@${VMESSWS_DOMAIN_SOCKET_FILE}",
+            "listen": "127.0.0.1", 
+            "port": ${VMESSWSPORT},
             "protocol": "vmess",
             "settings": {
                 "users": [
@@ -41,7 +43,8 @@ cat << EOF > /usr/local/etc/myapp/config.json
             }
         },
         {
-            "listen": "@${TROJANGRPC_DOMAIN_SOCKET_FILE}",
+            "listen": "127.0.0.1", 
+            "port": ${TROJANGRPCPORT},
             "protocol": "trojan",
             "settings": {
                 "users": [
